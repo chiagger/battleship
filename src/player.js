@@ -1,5 +1,3 @@
-const gameboardMod = require('./gameboard');
-
 class Player {
     constructor(id, gameboard) {
         this.id = id;

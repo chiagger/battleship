@@ -14,24 +14,15 @@
     <div class="layout-grid">
         <div class="header">Battleship</div>
 
-        <div class="content">
-            <div class="urships">
-            </div>
-            <div class="gridbck">
-                
-                <div id="meGrid"></div>
-            </div>
-            <div class="gridbck">
-                <div id="enemyGrid"></div>
-            </div>
-        </div>
-
         <div class="instruction">
-            <div class="text">Place your ships</div>
+            <div class="wrapper">
+                <div class="text">Place your ships (drag and drop)</div>
+                <button id="axis">Axis: x</button>
+            </div>
             <ul>
                 <li>
                     <div class="subtext">1x</div>
-                    <div class="ship1">
+                    <div class="ship1" draggable="true">
                         <div class="cell"></div>
                         <div class="cell"></div>
                         <div class="cell"></div>
@@ -40,7 +31,7 @@
                 </li>
                 <li>
                     <div class="subtext">2x</div>
-                    <div class="ship2">
+                    <div class="ship2" draggable="true">
                         <div class="cell"></div>
                         <div class="cell"></div>
                         <div class="cell"></div>
@@ -48,19 +39,36 @@
                 </li>
                 <li>
                     <div class="subtext">3x</div>
-                    <div class="ship3">
+                    <div class="ship3" draggable="true">
                         <div class="cell"></div>
                         <div class="cell"></div>
                     </div>
                 </li>
                 <li>
                     <div class="subtext">4x</div>
-                    <div class="ship4">
+                    <div class="ship4" draggable="true">
                         <div class="cell"></div>
                     </div>
                 </li>
             </ul>
         </div>
+
+        <div class="content">
+            <div class="wrapper">
+                <div class="gridbck">
+                    <div id="meGrid"></div>
+                </div>
+                <div class="desc">Friendly waters</div>
+            </div>
+            <div class="wrapper">
+                <div class="gridbck">
+                    <div id="enemyGrid"></div>
+                </div>
+                <div class="desc">Enemy waters</div>
+            </div>
+        </div>
+
+
         <div class="footer">Footer</div>
     </div>
 </body>

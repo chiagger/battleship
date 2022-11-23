@@ -9,6 +9,7 @@ let enemyGb = new gameboard.Gameboard();
 let mePlayer = new player.Player(0, meGb);
 let enemyPlayer = new player.Player(1, enemyGb);
 
+//useful functions
 function getAxisName(value) {
     if (value === 0) {
         return "x";
@@ -31,6 +32,8 @@ function getNrOfShip(length) {
     }
 }
 
+
+//enemy ship placement
 function calcPlace(length) {
     let position;
     let nr = getNrOfShip(length);
@@ -109,132 +112,76 @@ function placeEnemyShips() {
     calcPlace(1);
 }
 
-function mouseoverfoury(e) {
-    e.target.classList.add("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.add("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.add("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.add("hovered");
-}
-function mouseoutfoury(e) {
-    e.target.classList.remove("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove("hovered");
-}
 
-function mouseoverfourx(e) {
-    e.target.classList.add("hovered");
-    e.target.nextElementSibling.classList.add("hovered");
-    e.target.nextElementSibling.nextElementSibling.classList.add("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.add("hovered");
-}
-function mouseoutfourx(e) {
-    e.target.classList.remove("hovered");
-    e.target.nextElementSibling.classList.remove("hovered");
-    e.target.nextElementSibling.nextElementSibling.classList.remove("hovered");
-    e.target.nextElementSibling.nextElementSibling.nextElementSibling.classList.remove("hovered");
-}
-
-
-function placefourship(axis) {
-    const cells = document.querySelectorAll("#meGrid .cell");
-    var clickfoury = function (i) {
-        return function curried_func(e) {
-            let xcc;
-            let ycc;
-            if (i.toString().length === 1) {
-                xcc = 0;
-                ycc = parseInt(i.toString()[0]);
-            } else {
-                xcc = parseInt(i.toString()[0]);
-                ycc = parseInt(i.toString()[1]);
-            }
-            meGb.placeShip(xcc, ycc, "y", 4, meGb);
-            for (let i = 0; i < meGb.getBoard().length; i++) {
-                if (meGb.getBoard()[i].getPlaced() === true) {
-                    cells[i].style.backgroundColor = "gray";
-                }
-                cells[i].removeEventListener("mouseover", mouseoverfoury);
-                cells[i].removeEventListener("mouseout", mouseoutfoury);
-
-            }
-
-        }
-    }
-    var clickfourx = function (i) {
-        return function curried_func(e) {
-            let xcc;
-            let ycc;
-            if (i.toString().length === 1) {
-                xcc = 0;
-                ycc = parseInt(i.toString()[0]);
-            } else {
-                xcc = parseInt(i.toString()[0]);
-                ycc = parseInt(i.toString()[1]);
-            }
-            meGb.placeShip(xcc, ycc, "x", 4, meGb);
-            for (let i = 0; i < meGb.getBoard().length; i++) {
-                if (meGb.getBoard()[i].getPlaced() === true) {
-                    cells[i].style.backgroundColor = "gray";
-                }
-                cells[i].removeEventListener("mouseover", mouseoverfourx);
-                cells[i].removeEventListener("mouseout", mouseoutfourx);
-            }
-
-        }
-    }
-
-    //place 4 ship
-    for (let i = 0; i < cells.length; i++) {
-        if (axis === 0) {
-            cells[i].removeEventListener("click", clickfoury(i));
-            cells[i].removeEventListener("mouseover", mouseoverfoury);
-            cells[i].removeEventListener("mouseout", mouseoutfoury);
-            cells[i].addEventListener("mouseover", mouseoverfourx);
-            cells[i].addEventListener("mouseout", mouseoutfourx)
-            cells[i].addEventListener("click", clickfourx(i), { once: true });
-
-        } else {
-            cells[i].removeEventListener("click", clickfourx(i));
-            cells[i].removeEventListener("mouseover", mouseoverfourx);
-            cells[i].removeEventListener("mouseout", mouseoutfourx);
-            cells[i].addEventListener("mouseover", mouseoverfoury);
-            cells[i].addEventListener("mouseout", mouseoutfoury);
-            cells[i].addEventListener("click", clickfoury(i), { once: true })
-
-        }
-    }
-
-}
-
+//player ship placement
 function placeYourShips() {
-    let axis = 1;
-    const urships = document.querySelector(".urships");
-    const axisbtn = document.createElement("button");
-    axisbtn.textContent = "Axis: x";
-    urships.appendChild(axisbtn);
-    /*axisbtn.addEventListener("click", () => {
-        if (axisbtn.textContent === "Axis: x") {
-            axisbtn.textContent = "Axis: y";
-            axis = 1;
-        } else {
-            axisbtn.textContent === "Axis: x"
-            axis = 0;
-        }
-        placefourship(axis);
-    })*/
-    placefourship(axis);
-
+    const fourship = document.querySelector(".ship1");
+    fourship.addEventListener("dragstart", drag);
+    const threeship = document.querySelector(".ship2");
+    threeship.addEventListener("dragstart", drag);
+    const twoship = document.querySelector(".ship3");
+    twoship.addEventListener("dragstart", drag);
+    const oneship = document.querySelector(".ship4");
+    oneship.addEventListener("dragstart", drag);
 }
 
-function populateGrids() {
-    try {
-        const meGrid = document.getElementById('meGrid');
-        const enemyGrid = document.getElementById('enemyGrid');
+function dropShip(e) {
+    const cells = document.querySelectorAll("#meGrid .cell");
+    const length = e.dataTransfer.getData("length");
+    for (let i = 0; i < cells.length; i++) {
+        if (cells[i] === e.target) {
+            let xcc;
+            let ycc;
+            if (i.toString().length === 1) {
+                xcc = 0;
+                ycc = parseInt(i.toString()[0]);
+            } else {
+                xcc = parseInt(i.toString()[0]);
+                ycc = parseInt(i.toString()[1]);
+            }
+            meGb.placeShip(xcc, ycc, "x", parseInt(length), meGb);
+        }
+    }
+    for (let i = 0; i < meGb.getBoard().length; i++) {
+        if (meGb.getBoard()[i].getPlaced() === true) {
+            cells[i].style.backgroundColor = "gray";
+        }
+    }
+}
 
-        for (let i = 0; i < meGb.getBoard().length; i++) {
-            const DOMCell = document.createElement("div");
-            DOMCell.classList.add("cell");
+function drag(e) {
+    var childNodes = e.target.childNodes,
+        children = [],
+        i = childNodes.length;
+
+    while (i--) {
+        if (childNodes[i].nodeType == 1) {
+            children.unshift(childNodes[i]);
+        }
+    }
+    e.dataTransfer.setData("length", children.length);
+}
+
+function populateMeGrid(meGrid, turn) {
+    while (meGrid.hasChildNodes()) {
+        meGrid.removeChild(meGrid.firstChild);
+    }
+    for (let i = 0; i < meGb.getBoard().length; i++) {
+        const DOMCell = document.createElement("div");
+        DOMCell.classList.add("cell");
+        if (meGb.getBoard()[i].getPlaced() === true) {
+            DOMCell.style.backgroundColor = "gray";
+        }
+        DOMCell.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+        DOMCell.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropShip(e);
+        });
+
+        //this happens with an attack!!
+        if (turn === 1) {
             DOMCell.addEventListener("click", () => {
                 let position = i.toString();
                 if (position.length === 1) {
@@ -253,7 +200,6 @@ function populateGrids() {
                     if (meGb.getBoard()[i].getShip().isSunk() === true) {
                         for (let k = 0; k < meGb.getBoard().length; k++) {
                             if (meGb.getBoard()[k].getShip() === meGb.getBoard()[i].getShip()) {
-                                //only does 1
                                 const cellArray = document.querySelectorAll("#meGrid .cell");
                                 cellArray[k].style.backgroundColor = "red";
                             }
@@ -265,20 +211,23 @@ function populateGrids() {
                     }
 
                 } catch (e) { }
-
+                turn = 0;
             })
-
-            meGrid.appendChild(DOMCell);
-
         }
-        placeYourShips();
-        placeEnemyShips();
-        for (let i = 0; i < enemyGb.getBoard().length; i++) {
-            const DOMCell = document.createElement("div");
-            DOMCell.classList.add("cell");
-            // if (enemyGb.getBoard()[i].getPlaced() === true) {
-            //    DOMCell.style.backgroundColor = "gray";
-            //}
+        meGrid.appendChild(DOMCell);
+    }
+}
+
+function populateEnemyGrid(enemyGrid, turn) {
+    while (enemyGrid.hasChildNodes()) {
+        enemyGrid.removeChild(enemyGrid.firstChild);
+    }
+    for (let i = 0; i < enemyGb.getBoard().length; i++) {
+        const DOMCell = document.createElement("div");
+        DOMCell.classList.add("cell");
+
+        ///should only happen when its ur turn...
+        if (turn === 0) {
             DOMCell.addEventListener("click", () => {
                 let position = i.toString();
                 if (position.length === 1) {
@@ -299,7 +248,6 @@ function populateGrids() {
                             if (enemyGb.getBoard()[k].getShip() === enemyGb.getBoard()[i].getShip()) {
                                 const cellArray = document.querySelectorAll("#enemyGrid .cell");
                                 cellArray[k].style.backgroundColor = "red";
-
                             }
                         }
                         enemySunk += 1;
@@ -307,16 +255,33 @@ function populateGrids() {
                             alert("You WIN!!");
                         }
                     }
-                } catch (e) { }
-
+                } catch (e) { } 
             })
-            enemyGrid.appendChild(DOMCell);
+            turn = 1;
         }
+        enemyGrid.appendChild(DOMCell);
+    }
+    // attackEnemy();
+
+}
+
+//general gameboard
+function populateGrids() {
+    try {
+        let turn = 0;
+        const meGrid = document.getElementById('meGrid');
+        const enemyGrid = document.getElementById('enemyGrid');
+
+        placeYourShips();
+        populateMeGrid(meGrid, turn);
+
+        placeEnemyShips();
+        populateEnemyGrid(enemyGrid, turn);
+
     } catch (e) {
         alert(e.message);
     }
 }
-
 
 populateGrids();
 
@@ -324,4 +289,3 @@ populateGrids();
 
 
 
-module.exports = { meGb, enemyGb, mePlayer, enemyPlayer }

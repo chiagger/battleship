@@ -1,5 +1,3 @@
-
-
 class Ship {
     constructor(length, gameboard) {
         this.length = length;
