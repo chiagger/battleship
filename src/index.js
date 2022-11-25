@@ -8,6 +8,8 @@ let meGb = new gameboard.Gameboard();
 let enemyGb = new gameboard.Gameboard();
 let mePlayer = new player.Player(0, meGb);
 let enemyPlayer = new player.Player(1, enemyGb);
+let nr = 0;
+
 
 //useful functions
 function getAxisName(value) {
@@ -115,6 +117,21 @@ function placeEnemyShips() {
 
 //player ship placement
 function placeYourShips() {
+    const cells = document.querySelectorAll("#meGrid .cell");
+    for (let i = 0; i < meGb.getBoard().length; i++) {
+        cells[i].addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+        cells[i].addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropShip(e);
+            nr++
+            if (nr === 10) {
+                getAttack();
+            }
+        });
+
+    }
     const fourship = document.querySelector(".ship1");
     fourship.addEventListener("dragstart", drag);
     const threeship = document.querySelector(".ship2");
@@ -123,6 +140,8 @@ function placeYourShips() {
     twoship.addEventListener("dragstart", drag);
     const oneship = document.querySelector(".ship4");
     oneship.addEventListener("dragstart", drag);
+
+
 }
 
 function dropShip(e) {
@@ -139,7 +158,15 @@ function dropShip(e) {
                 xcc = parseInt(i.toString()[0]);
                 ycc = parseInt(i.toString()[1]);
             }
-            meGb.placeShip(xcc, ycc, "x", parseInt(length), meGb);
+
+            try {
+                meGb.placeShip(xcc, ycc, "x", parseInt(length), meGb);
+            } catch (e) {
+                nr--;
+                alert(e.message)
+            }
+
+
         }
     }
     for (let i = 0; i < meGb.getBoard().length; i++) {
@@ -162,130 +189,168 @@ function drag(e) {
     e.dataTransfer.setData("length", children.length);
 }
 
-function populateMeGrid(meGrid, turn) {
-    while (meGrid.hasChildNodes()) {
-        meGrid.removeChild(meGrid.firstChild);
-    }
+
+function populateMeGrid(meGrid) {
+    const cells = document.querySelectorAll("#meGrid .cell");
+
     for (let i = 0; i < meGb.getBoard().length; i++) {
-        const DOMCell = document.createElement("div");
-        DOMCell.classList.add("cell");
-        if (meGb.getBoard()[i].getPlaced() === true) {
-            DOMCell.style.backgroundColor = "gray";
-        }
-        DOMCell.addEventListener("dragover", (e) => {
-            e.preventDefault();
-        });
-        DOMCell.addEventListener("drop", (e) => {
-            e.preventDefault();
-            dropShip(e);
-        });
-
-        //this happens with an attack!!
-        if (turn === 1) {
-            DOMCell.addEventListener("click", () => {
-                let position = i.toString();
-                if (position.length === 1) {
-                    position = "0" + position;
-                }
-                let xcc = position[0];
-                let ycc = position[1];
-                enemyPlayer.attack(xcc, ycc, mePlayer.getGameboard());
-                if (meGb.getBoard()[i].getAttacked() === true) {
-                    DOMCell.style.backgroundColor = "aquamarine";
-                }
-                if (meGb.getBoard()[i].getHit() === true) {
-                    DOMCell.style.backgroundColor = "orange";
-                }
-                try {
-                    if (meGb.getBoard()[i].getShip().isSunk() === true) {
-                        for (let k = 0; k < meGb.getBoard().length; k++) {
-                            if (meGb.getBoard()[k].getShip() === meGb.getBoard()[i].getShip()) {
-                                const cellArray = document.querySelectorAll("#meGrid .cell");
-                                cellArray[k].style.backgroundColor = "red";
-                            }
-                        }
-                        meSunk += 1;
-                        if (meSunk === 10) {
-                            alert("You LOSE!!");
-                        }
+        try {
+            if (meGb.getBoard()[i].getPlaced() === true) {
+                cells[i].style.backgroundColor = "gray";
+            }
+            if (meGb.getBoard()[i].getAttacked() === true) {
+                cells[i].style.backgroundColor = "aquamarine";
+            }
+            if (meGb.getBoard()[i].getHit() === true) {
+                cells[i].style.backgroundColor = "orange";
+            }
+            if (meGb.getBoard()[i].getShip().isSunk() === true) {
+                for (let k = 0; k < meGb.getBoard().length; k++) {
+                    if (meGb.getBoard()[k].getShip() === meGb.getBoard()[i].getShip()) {
+                        const cellArray = document.querySelectorAll("#meGrid .cell");
+                        cellArray[k].style.backgroundColor = "red";
                     }
+                }
+                meSunk += 1;
+            }
+            if (meSunk === 10) {
+                //func that comopletes the win
+                console.log("You lose");
 
-                } catch (e) { }
-                turn = 0;
-            })
-        }
-        meGrid.appendChild(DOMCell);
+            }
+        } catch (e) { }
+
     }
 }
 
-function populateEnemyGrid(enemyGrid, turn) {
-    while (enemyGrid.hasChildNodes()) {
-        enemyGrid.removeChild(enemyGrid.firstChild);
-    }
+function populateEnemyGrid(enemyGrid) {
+    const cells = document.querySelectorAll("#enemyGrid .cell");
     for (let i = 0; i < enemyGb.getBoard().length; i++) {
-        const DOMCell = document.createElement("div");
-        DOMCell.classList.add("cell");
+        // if hit, if sunk
+        try {
+            if (enemyGb.getBoard()[i].getAttacked() === true) {
+                cells[i].style.backgroundColor = "aquamarine";
+            }
+            if (enemyGb.getBoard()[i].getHit() === true) {
+                cells[i].style.backgroundColor = "orange";
+            }
 
-        ///should only happen when its ur turn...
-        if (turn === 0) {
-            DOMCell.addEventListener("click", () => {
-                let position = i.toString();
-                if (position.length === 1) {
-                    position = "0" + position;
-                }
-                let xcc = position[0];
-                let ycc = position[1];
-                mePlayer.attack(xcc, ycc, enemyPlayer.getGameboard());
-                if (enemyGb.getBoard()[i].getAttacked() === true) {
-                    DOMCell.style.backgroundColor = "aquamarine";
-                }
-                if (enemyGb.getBoard()[i].getHit() === true) {
-                    DOMCell.style.backgroundColor = "orange";
-                }
-                try {
-                    if (enemyGb.getBoard()[i].getShip().isSunk() === true) {
-                        for (let k = 0; k < enemyGb.getBoard().length; k++) {
-                            if (enemyGb.getBoard()[k].getShip() === enemyGb.getBoard()[i].getShip()) {
-                                const cellArray = document.querySelectorAll("#enemyGrid .cell");
-                                cellArray[k].style.backgroundColor = "red";
-                            }
-                        }
-                        enemySunk += 1;
-                        if (enemySunk === 10) {
-                            alert("You WIN!!");
-                        }
+            if (enemyGb.getBoard()[i].getShip().isSunk() === true) {
+                for (let k = 0; k < enemyGb.getBoard().length; k++) {
+                    if (enemyGb.getBoard()[k].getShip() === enemyGb.getBoard()[i].getShip()) {
+                        const cellArray = document.querySelectorAll("#enemyGrid .cell");
+                        cellArray[k].style.backgroundColor = "red";
                     }
-                } catch (e) { } 
-            })
-            turn = 1;
-        }
-        enemyGrid.appendChild(DOMCell);
-    }
-    // attackEnemy();
+                }
+                enemySunk += 1;
+            }
+            if (enemySunk === 10) {
+                //func that completes the win
+                console.log("You win");
 
+            }
+
+
+        } catch (e) { }
+    }
 }
+
+function getOtherPlayer(currentPlayer) {
+    if (currentPlayer === mePlayer)
+        return enemyPlayer;
+    else return mePlayer;
+}
+
+
+let turn = 0;
+let latestMoveBy = enemyPlayer;
+function playerMove(currentPlayer, xcc, ycc) {
+    try {
+        if (latestMoveBy === currentPlayer)
+            return;
+        turn++;
+        //transform cell DOM
+        currentPlayer.attack(xcc, ycc, getOtherPlayer(currentPlayer).getGameboard());
+        populateMeGrid(meGrid);
+        populateEnemyGrid(enemyGrid);
+        latestMoveBy = currentPlayer;
+    } catch (e) {
+        turn--;
+    }
+}
+
+
+
+
 
 //general gameboard
 function populateGrids() {
     try {
-        let turn = 0;
         const meGrid = document.getElementById('meGrid');
         const enemyGrid = document.getElementById('enemyGrid');
-
-        placeYourShips();
-        populateMeGrid(meGrid, turn);
-
         placeEnemyShips();
-        populateEnemyGrid(enemyGrid, turn);
+
+        for (let i = 0; i < enemyGb.getBoard().length; i++) {
+            const DOMCell = document.createElement("div");
+            DOMCell.classList.add("cell");
+            if (enemyGb.getBoard()[i].getPlaced() === true) {
+                DOMCell.style.backgroundColor = "gray";
+            }
+            enemyGrid.appendChild(DOMCell);
+        }
+
+
+        for (let i = 0; i < meGb.getBoard().length; i++) {
+            const DOMCell = document.createElement("div");
+            DOMCell.classList.add("cell");
+            if (meGb.getBoard()[i].getPlaced() === true) {
+                DOMCell.style.backgroundColor = "gray";
+            }
+            meGrid.appendChild(DOMCell);
+        }
+
+        //only lets you place after 1st move
+        //++ first move is ALWAYS me not enemy -- good thing...
+        //u need to implement random attack by enemy 
+        placeYourShips();
+
 
     } catch (e) {
         alert(e.message);
     }
 }
 
+function getAttack() {
+    const cellsMe = document.querySelectorAll("#meGrid .cell");
+    const cellsEnemy = document.querySelectorAll("#enemyGrid .cell");
+
+    for (let i = 0; i < cellsMe.length; i++) {
+        cellsMe[i].addEventListener("click", () => {
+            let position = i.toString();
+            if (position.length === 1) {
+                position = "0" + position;
+            }
+            let xcc = position[0];
+            let ycc = position[1];
+            let player;
+            player = enemyPlayer
+            playerMove(player, xcc, ycc);
+        })
+    }
+    for (let i = 0; i < cellsEnemy.length; i++) {
+        cellsEnemy[i].addEventListener("click", () => {
+            let position = i.toString();
+            if (position.length === 1) {
+                position = "0" + position;
+            }
+            let xcc = position[0];
+            let ycc = position[1];
+            let player;
+            player = mePlayer
+            playerMove(player, xcc, ycc);
+        })
+    }
+}
+
+
 populateGrids();
-
-
-
-
-

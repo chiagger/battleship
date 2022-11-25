@@ -3,6 +3,7 @@ class Player {
         this.id = id;
         this.gameboard = gameboard;
     }
+  
     getId() {
         return this.id;
     }

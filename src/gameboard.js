@@ -47,7 +47,37 @@ class Gameboard {
         this.shipArray2 = Array.apply(null, Array(3)).map(function () { });
         this.shipArray1 = Array.apply(null, Array(4)).map(function () { });
     }
+    rmFromShipArray() {
+        this.shipArray.pop();
+    }
+    rmFromShipArray1(ship) {
+        let index = this.shipArray1.indexOf(ship);
 
+        if (index !== -1) {
+            this.shipArray1[index] = undefined;
+        }
+    }
+    rmFromShipArray2(ship) {
+        let index = this.shipArray2.indexOf(ship);
+
+        if (index !== -1) {
+            this.shipArray2[index] = undefined;
+        }
+    }
+    rmFromShipArray3(ship) {
+        let index = this.shipArray3.indexOf(ship);
+
+        if (index !== -1) {
+            this.shipArray3[index] = undefined;
+        }
+    }
+    rmFromShipArray4(ship) {
+        let index = this.shipArray4.indexOf(ship);
+
+        if (index !== -1) {
+            this.shipArray4[index] = undefined;
+        }
+    }
     getShipArray() {
         return this.shipArray;
     }
@@ -98,8 +128,19 @@ class Gameboard {
                     if (this.board[position].getPlaced() === true) {
                         canPlace = false;
                     }
-                }
-                if (canPlace === true) {
+                } if (canPlace === false) {
+                    this.rmFromShipArray();
+                    if (length === 1) {
+                        this.rmFromShipArray1(newShip);
+                    } else if (length === 2) {
+                        this.rmFromShipArray2(newShip);
+                    } else if (length === 3) {
+                        this.rmFromShipArray3(newShip);
+                    } else if (length === 4) {
+                        this.rmFromShipArray4(newShip);
+                    }
+                    throw new Error("Can't be placed")
+                } else {
                     for (let i = 0; i < length; i++) {
                         position = parseInt((xcc).toString() + (ycc + i).toString());
                         if (this.board[position].getPlaced() === false) {
@@ -125,7 +166,20 @@ class Gameboard {
                         canPlace = false;
                     }
                 }
-                if (canPlace === true) {
+                if (canPlace === false) {
+                    this.rmFromShipArray();
+                    if (length === 1) {
+                        this.rmFromShipArray1(newShip);
+                    } else if (length === 2) {
+                        this.rmFromShipArray2(newShip);
+                    } else if (length === 3) {
+                        this.rmFromShipArray3(newShip);
+                    } else if (length === 4) {
+                        this.rmFromShipArray4(newShip);
+                    }
+                    throw new Error("Can't be placed")
+
+                } else {
                     for (let i = 0; i < length; i++) {
                         position = parseInt((xcc + i).toString() + (ycc).toString());
                         if (this.board[position].getPlaced() === false) {
