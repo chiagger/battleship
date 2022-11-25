@@ -2,8 +2,6 @@ const ship = require('./ship');
 const gameboard = require('./gameboard.js');
 const player = require('./player');
 
-let enemySunk = 0;
-let meSunk = 0;
 let meGb = new gameboard.Gameboard();
 let enemyGb = new gameboard.Gameboard();
 let mePlayer = new player.Player(0, meGb);
@@ -211,12 +209,6 @@ function populateMeGrid(meGrid) {
                         cellArray[k].style.backgroundColor = "red";
                     }
                 }
-                meSunk += 1;
-            }
-            if (meSunk === 10) {
-                //func that comopletes the win
-                console.log("You lose");
-
             }
         } catch (e) { }
 
@@ -228,6 +220,9 @@ function populateEnemyGrid(enemyGrid) {
     for (let i = 0; i < enemyGb.getBoard().length; i++) {
         // if hit, if sunk
         try {
+            if(enemyGb.getBoard()[i].getPlaced() === true) {
+                cells[i].style.backgroundColor = "gray";
+            }
             if (enemyGb.getBoard()[i].getAttacked() === true) {
                 cells[i].style.backgroundColor = "aquamarine";
             }
@@ -242,17 +237,13 @@ function populateEnemyGrid(enemyGrid) {
                         cellArray[k].style.backgroundColor = "red";
                     }
                 }
-                enemySunk += 1;
             }
-            if (enemySunk === 10) {
-                //func that completes the win
-                console.log("You win");
+            
 
-            }
-
-
+            
         } catch (e) { }
     }
+    
 }
 
 function getOtherPlayer(currentPlayer) {
@@ -293,9 +284,9 @@ function populateGrids() {
         for (let i = 0; i < enemyGb.getBoard().length; i++) {
             const DOMCell = document.createElement("div");
             DOMCell.classList.add("cell");
-            if (enemyGb.getBoard()[i].getPlaced() === true) {
-                DOMCell.style.backgroundColor = "gray";
-            }
+            /*  if (enemyGb.getBoard()[i].getPlaced() === true) {
+                  DOMCell.style.backgroundColor = "gray";
+              }*/
             enemyGrid.appendChild(DOMCell);
         }
 
@@ -309,9 +300,7 @@ function populateGrids() {
             meGrid.appendChild(DOMCell);
         }
 
-        //only lets you place after 1st move
-        //++ first move is ALWAYS me not enemy -- good thing...
-        //u need to implement random attack by enemy 
+
         placeYourShips();
 
 
@@ -320,23 +309,14 @@ function populateGrids() {
     }
 }
 
-function getAttack() {
-    const cellsMe = document.querySelectorAll("#meGrid .cell");
-    const cellsEnemy = document.querySelectorAll("#enemyGrid .cell");
+let posArr = [];
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
-    for (let i = 0; i < cellsMe.length; i++) {
-        cellsMe[i].addEventListener("click", () => {
-            let position = i.toString();
-            if (position.length === 1) {
-                position = "0" + position;
-            }
-            let xcc = position[0];
-            let ycc = position[1];
-            let player;
-            player = enemyPlayer
-            playerMove(player, xcc, ycc);
-        })
-    }
+
+function getAttack() {
+    const cellsEnemy = document.querySelectorAll("#enemyGrid .cell");
     for (let i = 0; i < cellsEnemy.length; i++) {
         cellsEnemy[i].addEventListener("click", () => {
             let position = i.toString();
@@ -348,9 +328,46 @@ function getAttack() {
             let player;
             player = mePlayer
             playerMove(player, xcc, ycc);
+
+            let xcce = randomIntFromInterval(1, 10) - 1;
+            let ycce = randomIntFromInterval(1, 10) - 1;
+            let positione = parseInt(xcce.toString() + ycce.toString());
+            if (xcce === 0) {
+                positione = parseInt(ycce.toString());
+
+            }
+            // posArr.push(positione);
+            let ok = true;
+            for (let k = 0; k < posArr.length; k++) {
+                if (posArr[k] === positione) {
+                    ok = false;
+                }
+            }
+            while (ok === false) {
+                ok = true;
+                xcce = randomIntFromInterval(1, 10) - 1;
+                ycce = randomIntFromInterval(1, 10) - 1;
+                positione = parseInt(xcce.toString() + ycce.toString());
+                if (xcce === 0) {
+                    positione = parseInt(ycce.toString());
+
+                }
+                for (let k = 0; k < posArr.length; k++) {
+                    if (posArr[k] === positione) {
+                        ok = false;
+                    }
+                }
+            }
+            posArr.push(positione);
+            player = enemyPlayer
+            playerMove(player, xcce, ycce);
         })
     }
 }
 
 
 populateGrids();
+
+//need to implement y axis placement with axis: button
+//need to implement WIN message
+//finish up
