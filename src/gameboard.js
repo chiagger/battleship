@@ -202,8 +202,9 @@ class Gameboard {
         }
         this.board[position].setAttacked(true);
         if (this.board[position].getPlaced() === true) {
-            this.board[position].setHit(true);
             this.board[position].getShip().increaseHit();
+
+            this.board[position].setHit(true);
 
         }
     }

@@ -14,6 +14,19 @@ body {
     font-size: 2.5em;
 }
 
+.cont {
+    display:flex;
+    flex-direction: column;
+}
+
+.big {
+    font-size: 3em;
+}
+
+.medium {
+    font-size: 1.5em;
+}
+
 .content {
     padding: 2.5rem;
     display: flex;
@@ -71,6 +84,7 @@ body {
 .instruction {
     display: flex;
     font-size: 1em;
+    gap: 30px;
     justify-content: center;
     align-items: center;
 }
@@ -136,7 +150,7 @@ body {
     gap: 1px;
 }
 
-li {
+li.horizontal  {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -144,7 +158,78 @@ li {
     padding-left: 45%;
 }
 
-li .cell {
+li.horizontal .cell {
+    background-color: gray;
+}
+
+li.horizontal .subtext {
+    font-size: 0.5em;
+}
+
+ul.horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+ul.vertical {
+    display:flex;
+    gap: 8px;
+    margin-top: -15px;
+    margin-left: 15%;
+    text-align: center;
+}
+
+li.vertical {
+    display:flex;
+    flex-direction: column;
+}
+
+ul.vertical .ship1 {
+    width: 40px;
+    height: 0px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1px;
+}
+ul.vertical  .ship4 {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    gap: 1px;
+}
+
+li.vertical .subtext {
+  
+    font-size: 0.5em;
+}
+
+ul.vertical .subtext {
+    font-size: x-small;
+}
+
+ul.vertical  .ship3 {
+    width: 40px;
+    height: 80px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1px;
+}
+
+ul.vertical  .ship2 {
+    width: 40px;
+    height: 120px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1px;
+}
+
+li.vertical .cell {
     background-color: gray;
 }
 

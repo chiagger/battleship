@@ -7,6 +7,212 @@ let enemyGb = new gameboard.Gameboard();
 let mePlayer = new player.Player(0, meGb);
 let enemyPlayer = new player.Player(1, enemyGb);
 let nr = 0;
+const axisbtn = document.getElementById("axis");
+axisbtn.textContent = "Axis: x";
+let axis = 0;
+let hitE = 0;
+let hitMe = 0;
+
+function changeAxis() {
+    if (axis === 0) {
+        axisbtn.textContent = "Axis: y";
+        makeVertical();
+        const fourship = document.querySelector(".ship1");
+        fourship.addEventListener("dragstart", drag);
+        const threeship = document.querySelector(".ship2");
+        threeship.addEventListener("dragstart", drag);
+        const twoship = document.querySelector(".ship3");
+        twoship.addEventListener("dragstart", drag);
+        const oneship = document.querySelector(".ship4");
+        oneship.addEventListener("dragstart", drag);
+        axis = 1;
+
+    } else {
+        axisbtn.textContent = "Axis: x";
+        makeHorizontal();
+        const fourship = document.querySelector(".ship1");
+        fourship.addEventListener("dragstart", drag);
+        const threeship = document.querySelector(".ship2");
+        threeship.addEventListener("dragstart", drag);
+        const twoship = document.querySelector(".ship3");
+        twoship.addEventListener("dragstart", drag);
+        const oneship = document.querySelector(".ship4");
+        oneship.addEventListener("dragstart", drag);
+        axis = 0;
+    }
+}
+
+function makeHorizontal() {
+    const instruction = document.querySelector(".instruction");
+    const oldul = document.querySelector(".instruction ul");
+    instruction.removeChild(oldul);
+    const ul = document.createElement("ul");
+    ul.classList.add("horizontal");
+    const li1 = document.createElement("li");
+    li1.classList.add("horizontal");
+    const sub1 = document.createElement("div");
+    const sub2 = document.createElement("div");
+    const sub3 = document.createElement("div");
+    const sub4 = document.createElement("div");
+    sub1.textContent = "1x";
+    sub2.textContent = "2x";
+    sub3.textContent = "3x";
+    sub4.textContent = "4x";
+
+    const ship1 = document.createElement("div");
+    ship1.classList.add("ship1");
+    ship1.setAttribute("draggable", "true");
+    const cell1 = document.createElement("div");
+    const cell2 = document.createElement("div");
+    const cell3 = document.createElement("div");
+    const cell4 = document.createElement("div");
+    cell1.classList.add("cell");
+    cell2.classList.add("cell");
+    cell3.classList.add("cell");
+    cell4.classList.add("cell");
+    ship1.appendChild(cell1);
+    ship1.appendChild(cell2);
+    ship1.appendChild(cell3);
+    ship1.appendChild(cell4);
+    li1.appendChild(sub1);
+    li1.appendChild(ship1);
+
+
+    const li2 = document.createElement("li");
+    li2.classList.add("horizontal");
+    li2.appendChild(sub2);
+    const ship2 = document.createElement("div");
+    ship2.classList.add("ship2");
+    ship2.setAttribute("draggable", "true");
+    const cell5 = document.createElement("div");
+    const cell6 = document.createElement("div");
+    const cell7 = document.createElement("div");
+    cell5.classList.add("cell");
+    cell6.classList.add("cell");
+    cell7.classList.add("cell");
+    ship2.appendChild(cell5);
+    ship2.appendChild(cell6);
+    ship2.appendChild(cell7);
+    li2.appendChild(ship2);
+
+    const li3 = document.createElement("li");
+    li3.classList.add("horizontal");
+    li3.appendChild(sub3);
+    const ship3 = document.createElement("div");
+    ship3.classList.add("ship3");
+    ship3.setAttribute("draggable", "true");
+    const cell8 = document.createElement("div");
+    const cell9 = document.createElement("div");
+    cell8.classList.add("cell");
+    cell9.classList.add("cell");
+    ship3.appendChild(cell8);
+    ship3.appendChild(cell9);
+    li3.appendChild(ship3);
+
+    const li4 = document.createElement("li");
+    li4.classList.add("horizontal");
+    li4.appendChild(sub4);
+    const ship4 = document.createElement("div");
+    ship4.classList.add("ship4");
+    ship4.setAttribute("draggable", "true");
+    const cell10 = document.createElement("div");
+    cell10.classList.add("cell");
+    ship4.appendChild(cell10);
+    li4.appendChild(ship4);
+
+
+    ul.appendChild(li1);
+    ul.appendChild(li2);
+    ul.appendChild(li3);
+    ul.appendChild(li4)
+    instruction.appendChild(ul);
+}
+
+function makeVertical() {
+    const instruction = document.querySelector(".instruction");
+    const oldul = document.querySelector(".instruction ul");
+    instruction.removeChild(oldul);
+    const ul = document.createElement("ul");
+    ul.classList.add("vertical");
+    const li1 = document.createElement("li");
+    li1.classList.add("vertical");
+    const sub1 = document.createElement("div");
+    const sub2 = document.createElement("div");
+    const sub3 = document.createElement("div");
+    const sub4 = document.createElement("div");
+    sub1.textContent = "1x";
+    sub2.textContent = "2x";
+    sub3.textContent = "3x";
+    sub4.textContent = "4x";
+
+    const ship1 = document.createElement("div");
+    ship1.classList.add("ship1");
+    ship1.setAttribute("draggable", "true");
+    const cell1 = document.createElement("div");
+    const cell2 = document.createElement("div");
+    const cell3 = document.createElement("div");
+    const cell4 = document.createElement("div");
+    cell1.classList.add("cell");
+    cell2.classList.add("cell");
+    cell3.classList.add("cell");
+    cell4.classList.add("cell");
+    ship1.appendChild(cell1);
+    ship1.appendChild(cell2);
+    ship1.appendChild(cell3);
+    ship1.appendChild(cell4);
+    li1.appendChild(sub1);
+    li1.appendChild(ship1);
+
+
+    const li2 = document.createElement("li");
+    li2.classList.add("vertical");
+    li2.appendChild(sub2);
+    const ship2 = document.createElement("div");
+    ship2.classList.add("ship2");
+    ship2.setAttribute("draggable", "true");
+    const cell5 = document.createElement("div");
+    const cell6 = document.createElement("div");
+    const cell7 = document.createElement("div");
+    cell5.classList.add("cell");
+    cell6.classList.add("cell");
+    cell7.classList.add("cell");
+    ship2.appendChild(cell5);
+    ship2.appendChild(cell6);
+    ship2.appendChild(cell7);
+    li2.appendChild(ship2);
+
+    const li3 = document.createElement("li");
+    li3.classList.add("vertical");
+    li3.appendChild(sub3);
+    const ship3 = document.createElement("div");
+    ship3.classList.add("ship3");
+    ship3.setAttribute("draggable", "true");
+    const cell8 = document.createElement("div");
+    const cell9 = document.createElement("div");
+    cell8.classList.add("cell");
+    cell9.classList.add("cell");
+    ship3.appendChild(cell8);
+    ship3.appendChild(cell9);
+    li3.appendChild(ship3);
+
+    const li4 = document.createElement("li");
+    li4.classList.add("vertical");
+    li4.appendChild(sub4);
+    const ship4 = document.createElement("div");
+    ship4.classList.add("ship4");
+    ship4.setAttribute("draggable", "true");
+    const cell10 = document.createElement("div");
+    cell10.classList.add("cell");
+    ship4.appendChild(cell10);
+    li4.appendChild(ship4);
+
+
+    ul.appendChild(li1);
+    ul.appendChild(li2);
+    ul.appendChild(li3);
+    ul.appendChild(li4)
+    instruction.appendChild(ul);
+}
 
 
 //useful functions
@@ -116,6 +322,7 @@ function placeEnemyShips() {
 //player ship placement
 function placeYourShips() {
     const cells = document.querySelectorAll("#meGrid .cell");
+    axisbtn.addEventListener("click", changeAxis);
     for (let i = 0; i < meGb.getBoard().length; i++) {
         cells[i].addEventListener("dragover", (e) => {
             e.preventDefault();
@@ -125,6 +332,14 @@ function placeYourShips() {
             dropShip(e);
             nr++
             if (nr === 10) {
+                const instruction = document.querySelector(".instruction");
+                while (instruction.hasChildNodes()) {
+                    instruction.removeChild(instruction.firstChild);
+                }
+                const play = document.createElement("div");
+                play.classList.add("big");
+                play.textContent = "Attack!";
+                instruction.appendChild(play);
                 getAttack();
             }
         });
@@ -158,7 +373,11 @@ function dropShip(e) {
             }
 
             try {
-                meGb.placeShip(xcc, ycc, "x", parseInt(length), meGb);
+                if (axis === 0) {
+                    meGb.placeShip(xcc, ycc, "x", parseInt(length), meGb);
+                } else {
+                    meGb.placeShip(xcc, ycc, "y", parseInt(length), meGb);
+                }
             } catch (e) {
                 nr--;
                 alert(e.message)
@@ -189,17 +408,16 @@ function drag(e) {
 
 
 function populateMeGrid(meGrid) {
+    hitMe = 0;
     const cells = document.querySelectorAll("#meGrid .cell");
 
     for (let i = 0; i < meGb.getBoard().length; i++) {
         try {
-            if (meGb.getBoard()[i].getPlaced() === true) {
-                cells[i].style.backgroundColor = "gray";
-            }
             if (meGb.getBoard()[i].getAttacked() === true) {
                 cells[i].style.backgroundColor = "aquamarine";
             }
             if (meGb.getBoard()[i].getHit() === true) {
+                hitMe++;
                 cells[i].style.backgroundColor = "orange";
             }
             if (meGb.getBoard()[i].getShip().isSunk() === true) {
@@ -207,43 +425,80 @@ function populateMeGrid(meGrid) {
                     if (meGb.getBoard()[k].getShip() === meGb.getBoard()[i].getShip()) {
                         const cellArray = document.querySelectorAll("#meGrid .cell");
                         cellArray[k].style.backgroundColor = "red";
+
                     }
                 }
             }
+
         } catch (e) { }
+
+    }
+    if (hitMe === 20) {
+        const instruction = document.querySelector(".instruction");
+        while (instruction.hasChildNodes()) {
+            instruction.removeChild(instruction.firstChild);
+        }
+        const cont = document.createElement("div");
+        cont.classList.add("cont");
+        const play = document.createElement("div");
+        play.classList.add("big");
+        play.textContent = "You Lose! :(";
+        const again = document.createElement("div");
+        again.classList.add("medium");
+        again.textContent = "Refresh to play again.";
+        cont.appendChild(play);
+        cont.appendChild(again);
+        instruction.appendChild(cont);
 
     }
 }
 
 function populateEnemyGrid(enemyGrid) {
+    hitE = 0;
     const cells = document.querySelectorAll("#enemyGrid .cell");
     for (let i = 0; i < enemyGb.getBoard().length; i++) {
         // if hit, if sunk
         try {
-            if(enemyGb.getBoard()[i].getPlaced() === true) {
-                cells[i].style.backgroundColor = "gray";
-            }
+
             if (enemyGb.getBoard()[i].getAttacked() === true) {
                 cells[i].style.backgroundColor = "aquamarine";
             }
             if (enemyGb.getBoard()[i].getHit() === true) {
+                hitE++;
                 cells[i].style.backgroundColor = "orange";
-            }
 
+            }
             if (enemyGb.getBoard()[i].getShip().isSunk() === true) {
                 for (let k = 0; k < enemyGb.getBoard().length; k++) {
                     if (enemyGb.getBoard()[k].getShip() === enemyGb.getBoard()[i].getShip()) {
                         const cellArray = document.querySelectorAll("#enemyGrid .cell");
                         cellArray[k].style.backgroundColor = "red";
+
+
                     }
                 }
             }
-            
-
-            
         } catch (e) { }
     }
-    
+    if (hitE === 20) {
+        const instruction = document.querySelector(".instruction");
+        while (instruction.hasChildNodes()) {
+            instruction.removeChild(instruction.firstChild);
+        }
+        const cont = document.createElement("div");
+        cont.classList.add("cont");
+        const play = document.createElement("div");
+        play.classList.add("big");
+        play.textContent = "You Win! :)";
+        const again = document.createElement("div");
+        again.classList.add("medium");
+        again.textContent = "Refresh to play again."
+        cont.appendChild(play);
+        cont.appendChild(again);
+        instruction.appendChild(cont);
+    }
+
+
 }
 
 function getOtherPlayer(currentPlayer) {
@@ -281,12 +536,10 @@ function populateGrids() {
         const enemyGrid = document.getElementById('enemyGrid');
         placeEnemyShips();
 
+
         for (let i = 0; i < enemyGb.getBoard().length; i++) {
             const DOMCell = document.createElement("div");
             DOMCell.classList.add("cell");
-            /*  if (enemyGb.getBoard()[i].getPlaced() === true) {
-                  DOMCell.style.backgroundColor = "gray";
-              }*/
             enemyGrid.appendChild(DOMCell);
         }
 
@@ -299,6 +552,8 @@ function populateGrids() {
             }
             meGrid.appendChild(DOMCell);
         }
+
+
 
 
         placeYourShips();
@@ -358,6 +613,7 @@ function getAttack() {
                     }
                 }
             }
+
             posArr.push(positione);
             player = enemyPlayer
             playerMove(player, xcce, ycce);
@@ -368,6 +624,5 @@ function getAttack() {
 
 populateGrids();
 
-//need to implement y axis placement with axis: button
 //need to implement WIN message
 //finish up
